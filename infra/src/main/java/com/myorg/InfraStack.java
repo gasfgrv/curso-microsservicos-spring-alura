@@ -18,7 +18,7 @@ public class InfraStack extends Stack {
 
         // example resource
         // final Queue queue = Queue.Builder.create(this, "InfraQueue")
-        //         .visibilityTimeout(Duration.seconds(300))
-        //         .build();
+        // .visibilityTimeout(Duration.seconds(300))
+        // .build();
     }
 }
