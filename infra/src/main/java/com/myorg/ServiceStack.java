@@ -37,7 +37,7 @@ public class ServiceStack extends Stack {
                 .listenerPort(8080)
                 .assignPublicIp(true)
                 .taskImageOptions(ApplicationLoadBalancedTaskImageOptions.builder()
-                        .image(ContainerImage.fromRegistry("gustosilva/pedidos"))
+                        .image(ContainerImage.fromRegistry("gustosilva/pedidos-ms"))
                         .containerPort(8080)
                         .containerName("pedidos")
                         .environment(autenticacao)
