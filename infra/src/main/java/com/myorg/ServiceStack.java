@@ -1,5 +1,9 @@
 package com.myorg;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import software.amazon.awscdk.Fn;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.ecs.Cluster;
@@ -20,6 +24,12 @@ public class ServiceStack extends Stack {
     public ServiceStack(final Construct scope, final String id, final StackProps props, final Cluster cluster) {
         super(scope, id, props);
 
+        Map<String, String> autenticacao = new HashMap<>();
+        autenticacao.put("SPRING_DATASOURCE_URL", "jdbc:mysql://" + Fn.importValue("pedidos-db-endpoint")
+                + ":3306/alurafood-pedidos?createDatabaseIfNotExists=true");
+        autenticacao.put("SPRING_DATASOURCE_USERNAME", "admin");
+        autenticacao.put("SPRING_DATASOURCE_PASSWORD", Fn.importValue("pedidos-db-senha"));
+
         service = ApplicationLoadBalancedFargateService.Builder.create(this, "AluraService")
                 .cluster(cluster)
                 .cpu(512)
@@ -27,9 +37,10 @@ public class ServiceStack extends Stack {
                 .listenerPort(8080)
                 .assignPublicIp(true)
                 .taskImageOptions(ApplicationLoadBalancedTaskImageOptions.builder()
-                        .image(ContainerImage.fromRegistry("gustosilva/teste-modelmapper"))
+                        .image(ContainerImage.fromRegistry("gustosilva/pedidos"))
                         .containerPort(8080)
-                        .containerName("teste-modelmapper")
+                        .containerName("pedidos")
+                        .environment(autenticacao)
                         .build())
                 .memoryLimitMiB(2048)
                 .publicLoadBalancer(true)
@@ -40,7 +51,7 @@ public class ServiceStack extends Stack {
                 .port("8080")
                 .healthyHttpCodes("200")
                 .build());
-    
+
     }
 
 }

@@ -17,6 +17,7 @@ public class InfraApp {
                 
                 ServiceStack service = new ServiceStack(app, "Service", cluster.getCluster());
                 service.addDependency(cluster);
+                service.addDependency(rds);
 
                 app.synth();
         }
