@@ -13,7 +13,7 @@ public class InfraApp {
                 cluster.addDependency(vpc);
 
                 RdsStack rds = new RdsStack(app, "Rds", vpc.getVpc());
-                cluster.addDependency(vpc);
+                rds.addDependency(vpc);
                 
                 ServiceStack service = new ServiceStack(app, "Service", cluster.getCluster());
                 service.addDependency(cluster);
