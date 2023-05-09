@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 services:
   db:
     image: mysql:8.0
@@ -8,3 +8,15 @@ services:
       - '3306:3306'
     environment:
       MYSQL_ROOT_PASSWORD: root
+  rabbitmq:
+    image: rabbitmq:3.10-management
+    container_name: rabbitmq
+    restart: unless-stopped
+    ports:
+      - '5672:5762'
+      - '15672:15762'
+    volumes:
+      - ./mensageria:/var/lib/rabbitmq/
+    environment:
+      - RABBITMQ_DEFAULT_USER=alurafood
+      - RABBITMQ_DEFAULT_PASS=alurafood
