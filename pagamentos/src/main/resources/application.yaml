@@ -1,13 +1,18 @@
 spring:
-    application:
-      name: pagamentos-ms
-    datasource:
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/alurafood-pagamento?createDatabaseIfNotExist=true
-        username: root
-        password: root
-    jpa:
-        show-sql: true
+  application:
+    name: pagamentos-ms
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/alurafood-pagamento?createDatabaseIfNotExist=true
+    username: root
+    password: root
+  jpa:
+    show-sql: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: alurafood
+    password: alurafood
 
 eureka:
   client:

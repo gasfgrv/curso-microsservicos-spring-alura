@@ -11,12 +11,10 @@ services:
   rabbitmq:
     image: rabbitmq:3.10-management
     container_name: rabbitmq
-    restart: unless-stopped
+    restart: always
     ports:
-      - '5672:5762'
-      - '15672:15762'
-    volumes:
-      - ./mensageria:/var/lib/rabbitmq/
+      - '5672:5672'
+      - '15672:15672'
     environment:
       - RABBITMQ_DEFAULT_USER=alurafood
       - RABBITMQ_DEFAULT_PASS=alurafood
