@@ -3,6 +3,8 @@ package br.com.alurafood.pagamentos.controller;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +33,9 @@ public class PagamentoController {
     @Autowired
     private PagamentoService service;
 
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
     @GetMapping
     public Page<PagamentoDto> listar(@PageableDefault(size = 10) Pageable paginacao) {
         return service.obterTodos(paginacao);
@@ -47,6 +52,9 @@ public class PagamentoController {
             UriComponentsBuilder uriBuilder) {
         var pagamento = service.criarPagamento(dto);
         var endereco = uriBuilder.path("/pagamentos/{id}").buildAndExpand(pagamento.getId()).toUri();
+        
+        var message = new Message(("Criei um pagamento com o id %s".formatted(pagamento.getId())).getBytes());
+        rabbitTemplate.send("pagamento.confirmado", message);
         return ResponseEntity.created(endereco).body(pagamento);
     }
 
