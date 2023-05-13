@@ -1,13 +1,10 @@
 package br.com.alurafood.pagamentos.controller;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
 import br.com.alurafood.pagamentos.dto.PagamentoDto;
 import br.com.alurafood.pagamentos.service.PagamentoService;
-
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -52,7 +49,7 @@ public class PagamentoController {
         var pagamento = service.criarPagamento(dto);
         var endereco = uriBuilder.path("/pagamentos/{id}").buildAndExpand(pagamento.getId()).toUri();
 
-        rabbitTemplate.convertAndSend("pagamento.confirmado", pagamento);
+        rabbitTemplate.convertAndSend("pagamentos.ex", "", pagamento);
         return ResponseEntity.created(endereco).body(pagamento);
     }
 
