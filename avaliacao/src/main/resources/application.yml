@@ -10,9 +10,9 @@ spring:
       simple:
         retry:
           enabled: true
-          max-attempts: 4
+          max-attempts: 3
           initial-interval: 1000
-          multiplier: 2
+          multiplier: 1
           max-interval: 30000
 
 eureka:
