@@ -1,6 +1,18 @@
 spring:
+  application:
+    name: avaliacao-ms
   rabbitmq:
     host: localhost
     port: 5672
     username: alurafood
     password: alurafood
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8081/eureka
+  instance:
+    instance-id: ${spring.application.name}:${random.int}
+
+server:
+  port: 0
